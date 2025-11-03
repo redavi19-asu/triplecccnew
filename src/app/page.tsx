@@ -10,6 +10,9 @@ import { Zap, Plug, Car, MapPin, Smartphone, ShieldCheck } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
+const googleMapsEmbedUrl =
+  "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3105.001839478255!2d-77.0368703!3d38.9071923!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x89b7b7bcdf572b1f%3A0xefbdfd5714d0c857!2sWashington%2C%20DC!5e0!3m2!1sen!2sus!4v1730590800000!5m2!1sen!2sus";
+
 type SectionProps = {
   children: ReactNode;
   className?: string;
@@ -99,11 +102,12 @@ type StoryPanelProps = {
   title: string;
   subtitle: string;
   icon?: LucideIcon;
-  image: string;
+  image?: string;
+  media?: ReactNode;
   invert?: boolean;
 };
 
-function StoryPanel({ step, title, subtitle, icon: Icon, image, invert }: StoryPanelProps) {
+function StoryPanel({ step, title, subtitle, icon: Icon, image, media, invert }: StoryPanelProps) {
   const ref = useRef<HTMLDivElement | null>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
   const yImg = useTransform(scrollYProgress, [0, 1], [60, -60]);
@@ -130,15 +134,18 @@ function StoryPanel({ step, title, subtitle, icon: Icon, image, invert }: StoryP
           <motion.div style={{ y: yImg, opacity }} className="relative">
             <div className="absolute inset-0 -z-10 rounded-3xl bg-gradient-to-br from-sky-100 to-transparent opacity-70 blur-2xl" />
             <div className="relative w-full overflow-hidden rounded-3xl shadow-2xl ring-1 ring-black/5">
-              <Image
-                src={image}
-                alt={title}
-                width={1280}
-                height={960}
-                className="h-auto w-full object-cover"
-                loading="lazy"
-                sizes="(min-width: 1024px) 600px, (min-width: 768px) 80vw, 100vw"
-              />
+              {media ??
+                (image ? (
+                  <Image
+                    src={image}
+                    alt={title}
+                    width={1280}
+                    height={960}
+                    className="h-auto w-full object-cover"
+                    loading="lazy"
+                    sizes="(min-width: 1024px) 600px, (min-width: 768px) 80vw, 100vw"
+                  />
+                ) : null)}
             </div>
           </motion.div>
         </div>
@@ -269,7 +276,16 @@ export default function Home() {
         title="We find you fast"
         subtitle="Pin your location and tell us about your EV. Our dispatcher locks your ETA and sends a tech."
         icon={MapPin}
-        image="https://images.unsplash.com/photo-1519643381401-22c77e60520e?auto=format&fit=crop&w=1600&q=80"
+        media={
+          <iframe
+            src={googleMapsEmbedUrl}
+            title="Washington DC coverage map"
+            className="h-[320px] w-full border-0 md:h-[420px]"
+            loading="lazy"
+            allowFullScreen
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+        }
       />
       <StoryPanel
         step={2}
