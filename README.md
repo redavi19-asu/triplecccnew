@@ -21,10 +21,33 @@ Open `http://localhost:3000` to preview the site. The primary implementation liv
 ### Available Scripts
 - `npm run dev` – start the local development server with hot reload
 - `npm run lint` – run ESLint with the project configuration
-- `npm run build` – generate a production build
-- `npm run start` – serve the production build locally
+- `npm run build` – generate the production build and export static assets to `out/`
+- `npm run start` – serve the generated `out/` directory locally (`npx serve out`)
+
+### Deploying to GitHub Pages
+The project is configured for static export so it can run on GitHub Pages.
+
+1. Build the site (this also runs the export step):
+
+	```bash
+	npm run build
+	```
+
+	The fully static site will be written to `out/`.
+
+2. Push the files inside `out/` to the branch GitHub Pages is serving (commonly `gh-pages`). A simple workflow is:
+
+	```bash
+	git subtree push --prefix out origin gh-pages
+	```
+
+	or copy the `out/` contents into that branch manually.
+
+3. Configure GitHub Pages to serve from the root of the `gh-pages` branch. The deployed site will be available at `https://<username>.github.io/triplecccnew/`.
+
+The build automatically sets `basePath`/`assetPrefix` to `/triplecccnew` in production. If you fork this repo under a different name, update `basePath` in `next.config.ts` to match your repository slug.
 
 ### Project Notes
 - UI primitives such as `Button` and `Card` are in `src/components/ui`.
 - Global styles live in `src/app/globals.css`; metadata and layout wrapper are in `src/app/layout.tsx`.
-- Remote imagery currently uses standard `<img>` tags. Swap to `next/image` if you need built-in optimization or custom loaders.
+- Remote imagery is rendered with `next/image` but marked `unoptimized` so the static export can run on GitHub Pages. If you migrate to a hosting provider with image optimization, remove the `unoptimized` flag in `next.config.ts`.

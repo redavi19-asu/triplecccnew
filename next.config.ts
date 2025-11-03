@@ -1,19 +1,18 @@
 import type { NextConfig } from "next";
 
+const isProd = process.env.NODE_ENV === "production";
+
 const nextConfig: NextConfig = {
+  output: "export",
   images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "images.unsplash.com",
-      },
-      {
-        protocol: "https",
-        hostname: "maps.googleapis.com",
-        pathname: "/maps/api/staticmap",
-      },
-    ],
+    unoptimized: true,
   },
+  ...(isProd
+    ? {
+        basePath: "/triplecccnew",
+        assetPrefix: "/triplecccnew/",
+      }
+    : {}),
 };
 
 export default nextConfig;
