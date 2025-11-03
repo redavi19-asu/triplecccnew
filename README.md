@@ -45,7 +45,7 @@ The project is configured for static export so it can run on GitHub Pages.
 	git push
 	```
 
-	Then configure GitHub Pages (Settings → Pages) to serve from the `main` branch `/docs` folder. The static site will resolve at `https://<username>.github.io/triplecccnew/`.
+	The build script drops a `.nojekyll` file into `docs/` so GitHub Pages serves the `_next` assets correctly. Then configure GitHub Pages (Settings → Pages) to serve from the `main` branch `/docs` folder. The static site will resolve at `https://<username>.github.io/triplecccnew/`.
 
 	If you prefer using a dedicated `gh-pages` branch, continue pushing the `out/` folder contents to that branch instead.
 
