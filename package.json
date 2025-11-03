@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:pages": "npm run build && rm -rf docs && cp -R out docs",
     "start": "npx --yes serve out",
     "lint": "eslint"
   },

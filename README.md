@@ -22,6 +22,7 @@ Open `http://localhost:3000` to preview the site. The primary implementation liv
 - `npm run dev` – start the local development server with hot reload
 - `npm run lint` – run ESLint with the project configuration
 - `npm run build` – generate the production build and export static assets to `out/`
+- `npm run build:pages` – build and copy the exported files into `docs/` for GitHub Pages
 - `npm run start` – serve the generated `out/` directory locally (`npx serve out`)
 
 ### Deploying to GitHub Pages
@@ -35,15 +36,18 @@ The project is configured for static export so it can run on GitHub Pages.
 
 	The fully static site will be written to `out/`.
 
-2. Push the files inside `out/` to the branch GitHub Pages is serving (commonly `gh-pages`). A simple workflow is:
+2. To deploy from the `main` branch using GitHub Pages’ **docs** option, run:
 
 	```bash
-	git subtree push --prefix out origin gh-pages
+	npm run build:pages
+	git add docs
+	git commit -m "Publish GitHub Pages build"
+	git push
 	```
 
-	or copy the `out/` contents into that branch manually.
+	Then configure GitHub Pages (Settings → Pages) to serve from the `main` branch `/docs` folder. The static site will resolve at `https://<username>.github.io/triplecccnew/`.
 
-3. Configure GitHub Pages to serve from the root of the `gh-pages` branch. The deployed site will be available at `https://<username>.github.io/triplecccnew/`.
+	If you prefer using a dedicated `gh-pages` branch, continue pushing the `out/` folder contents to that branch instead.
 
 The build automatically sets `basePath`/`assetPrefix` to `/triplecccnew` in production. If you fork this repo under a different name, update `basePath` in `next.config.ts` to match your repository slug.
 
